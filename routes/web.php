@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\Sign\SigninController;
 use App\Http\Controllers\Admin\Sign\SignupController;
 use App\Http\Controllers\Admin\Sign\ForgotController;
+use App\Http\Controllers\Master\User\UserController;
+use App\Http\Controllers\Master\Role\RoleController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,10 +27,9 @@ Route::get('signup', function () {
 Route::post('signup', [SignupController::class, 'signup']);
 
 // Forgot Password
-Route::get('forgot', function () {
-    return view('admin.sign.forgot');
-})->name('forgot');
-Route::post('forgot', [ForgotController::class, 'forgot']);
+Route::get('forgot', [ForgotController::class, 'showForgotForm'])->name('forgot');
+Route::post('forgot', [ForgotController::class, 'handleForgot'])->name('forgot.submit');
+Route::post('forgot/reset', [ForgotController::class, 'resetForgot'])->name('forgot.reset');
 
 // Dashboard
 Route::get('dashboard', function () {
@@ -39,4 +40,7 @@ Route::get('dashboard', function () {
 // Logout
 Route::post('logout', [SigninController::class, 'logout'])->name('logout');
 
+// Resource
+Route::resource('user', UserController::class);
+Route::resource('role', RoleController::class);
 

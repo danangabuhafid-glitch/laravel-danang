@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
     <link rel="stylesheet" href="assets/css/app.css">
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
     <style>
         #main {
             display: flex;
@@ -42,26 +43,38 @@
                 <h3>@yield('title')</h3>
             </div>
             <div class="page-content">
-                <section class="row">
-                    <div class="col-12 col-lg-9">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
+                @yield('content')
+                @if (session('success'))
+                <!-- Success Notification Modal -->
+                <div class="modal fade text-left" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header bg-success text-white">
+                                <h5 class="modal-title white" id="successModalLabel">Success</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                        @endif
-                        @yield('content')
+                            <div class="modal-body text-center py-4">
+                                <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                                <h4 class="mt-3">Action Completed!</h4>
+                                <p class="mb-0 text-muted">{{ session('success') }}</p>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button type="button" class="btn btn-success px-4" data-bs-dismiss="modal">OK</button>
+                            </div>
+                        </div>
                     </div>
-                </section>
+                </div>
+                @endif
             </div>
 
             <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
-                        <p>2021 &copy; Mazer</p>
+                        <p>2026 &copy; Danang</p>
                     </div>
                     <div class="float-end">
                         <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                                href="http://ahmadsaugi.com">A. Saugi</a></p>
+                                href="http://danangabuhafid.my.id">Danang</a></p>
                     </div>
                 </div>
             </footer>
@@ -74,6 +87,23 @@
     <script src="assets/js/pages/dashboard.js"></script>
 
     <script src="assets/js/main.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table1');
+        if (table1) {
+            let dataTable = new simpleDatatables.DataTable(table1);
+        }
+
+        // Show Success Modal
+        document.addEventListener('DOMContentLoaded', function() {
+            let successModalEl = document.getElementById('successModal');
+            if (successModalEl) {
+                let successModal = new bootstrap.Modal(successModalEl);
+                successModal.show();
+            }
+        });
+    </script>
 </body>
 
 </html>
