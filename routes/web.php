@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Sign\SignupController;
 use App\Http\Controllers\Admin\Sign\ForgotController;
 use App\Http\Controllers\Master\User\UserController;
 use App\Http\Controllers\Master\Role\RoleController;
+use App\Http\Controllers\Master\Utils\LockerController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,4 +44,5 @@ Route::post('logout', [SigninController::class, 'logout'])->name('logout');
 // Resource
 Route::resource('user', UserController::class);
 Route::resource('role', RoleController::class);
-
+Route::get('locker/check-code', [LockerController::class, 'checkCode'])->name('locker.check-code');
+Route::resource('locker', LockerController::class);

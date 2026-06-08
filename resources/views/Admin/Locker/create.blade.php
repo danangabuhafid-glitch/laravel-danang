@@ -1,106 +1,118 @@
-<!-- Create User Modal -->
-<div class="modal fade text-left" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel" aria-hidden="true">
+<!-- Create Locker Modal -->
+<div class="modal fade text-left" id="createLockerModal" tabindex="-1" role="dialog" aria-labelledby="createLockerModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createUserModalLabel">Create User</h5>
+                <h5 class="modal-title" id="createLockerModalLabel">Create New Locker</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('user.store') }}" method="POST" class="form form-horizontal">
+            <form action="{{ route('locker.store') }}" method="POST" class="form form-horizontal">
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
                         <div class="row">
-                            <!-- Name -->
+                            <!-- Locker Code -->
                             <div class="col-md-4">
-                                <label for="name">Name</label>
+                                <label for="locker_code">Locker Code</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="text" id="name" name="name" class="form-control" placeholder="Name" required value="{{ old('name') }}">
+                                        <input type="text" id="locker_code" name="locker_code" class="form-control locker-code-input" placeholder="Locker Code" required>
                                         <div class="form-control-icon">
-                                            <i class="bi bi-person"></i>
+                                            <i class="bi bi-box"></i>
+                                        </div>
+                                    </div>
+                                    <div class="locker-code-feedback mt-1 small" style="display: none;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Locker Name -->
+                            <div class="col-md-4">
+                                <label for="locker_name">Owner Name</label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group has-icon-left">
+                                    <div class="position-relative">
+                                        <input type="text" id="locker_name" name="locker_name" class="form-control" placeholder="Locker Name">
+                                        <div class="form-control-icon">
+                                            <i class="bi bi-box"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Username -->
+                            <!-- Locker Description -->
                             <div class="col-md-4">
-                                <label for="username">Username</label>
+                                <label for="locker_description">Locker Description</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required value="{{ old('username') }}">
+                                        <input type="text" id="locker_description" name="locker_description" class="form-control" placeholder="Locker Description">
                                         <div class="form-control-icon">
-                                            <i class="bi bi-person-badge"></i>
+                                            <i class="bi bi-box"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Email -->
+                            <!-- Major -->
                             <div class="col-md-4">
-                                <label for="email">Email</label>
+                                <label for="major">Major</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="email" id="email" name="email" class="form-control" placeholder="Email" required value="{{ old('email') }}">
-                                        <div class="form-control-icon">
-                                            <i class="bi bi-envelope"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Role -->
-                            <div class="col-md-4">
-                                <label for="role_id">Role</label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group has-icon-left">
-                                    <div class="position-relative">
-                                        <select name="role_id" id="role_id" class="form-select ps-5" required>
-                                            <option value="">Select Role</option>
-                                            @foreach($roles as $role)
-                                                <option value="{{ $role->id }}" @if(old('role_id') == $role->id) selected @endif>{{ $role->role_name }}</option>
-                                            @endforeach
+                                        <select name="major" id="major" class="form-select ps-5" required>
+                                            <option value="">Select Major</option>
+                                            <option value="Web Programming">Web Programming</option>
+                                            <option value="Multimedia">Multimedia</option>
+                                            <option value="Teknik Jaringan">Teknik Jaringan</option>
                                         </select>
                                         <div class="form-control-icon">
-                                            <i class="bi bi-shield"></i>
+                                            <i class="bi bi-bookmark"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Password -->
+                            <!-- Locker Status -->
                             <div class="col-md-4">
-                                <label for="password">Password</label>
+                                <label for="locker_status">Locker Status</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                        <select name="locker_status" id="locker_status" class="form-select ps-5" required>
+                                            <option value="">Select Locker Status</option>
+                                            <option value="Available">Available</option>
+                                            <option value="Unavailable">Unavailable</option>
+                                            <option value="Damaged">Damaged</option>
+                                            <option value="Missing">Missing</option>
+                                        </select>
                                         <div class="form-control-icon">
-                                            <i class="bi bi-lock"></i>
+                                            <i class="bi bi-toggle-on"></i>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Confirm Password -->
+                            <!-- Batch -->
                             <div class="col-md-4">
-                                <label for="password_confirmation">Confirm Password</label>
+                                <label for="batch">Batch</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" placeholder="Confirm Password" required>
+                                        <select name="batch" id="batch" class="form-select ps-5" required>
+                                            <option value="">Select Batch</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                        </select>
                                         <div class="form-control-icon">
-                                            <i class="bi bi-lock-fill"></i>
+                                            <i class="bi bi-layers"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -110,7 +122,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save User</button>
+                    <button type="submit" class="btn btn-primary">Create Locker</button>
                 </div>
             </form>
         </div>
