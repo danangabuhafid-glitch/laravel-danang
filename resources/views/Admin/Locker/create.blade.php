@@ -18,7 +18,7 @@
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="text" id="locker_code" name="locker_code" class="form-control locker-code-input" placeholder="Locker Code" required>
+                                        <input type="text" id="locker_code" name="locker_code" class="form-control locker-code-input" placeholder="Select a key to generate code" readonly required>
                                         <div class="form-control-icon">
                                             <i class="bi bi-box"></i>
                                         </div>
@@ -27,17 +27,21 @@
                                 </div>
                             </div>
 
-                            <!-- Locker Name -->
+                            <!-- Owner / Student -->
                             <div class="col-md-4">
-                                <label for="locker_name">Owner Name</label>
+                                <label for="student_name_display_create">Owner (Student)</label>
                             </div>
                             <div class="col-md-8">
-                                <div class="form-group has-icon-left">
-                                    <div class="position-relative">
-                                        <input type="text" id="locker_name" name="locker_name" class="form-control" placeholder="Locker Name">
-                                        <div class="form-control-icon">
-                                            <i class="bi bi-box"></i>
-                                        </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="hidden" name="student_id" id="student_id_create" value="">
+                                        <input type="text" id="student_name_display_create" class="form-control" placeholder="Click choose to select student" readonly style="background-color: #f2f7ff; cursor: default;">
+                                        <button class="btn btn-primary" type="button" onclick="openChooseStudentModal('#student_id_create', '#student_name_display_create')">
+                                            <i class="bi bi-search"></i> Choose
+                                        </button>
+                                        <button class="btn btn-outline-danger" type="button" onclick="clearStudentSelection('#student_id_create', '#student_name_display_create')">
+                                            <i class="bi bi-x"></i> Clear
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -59,19 +63,40 @@
 
                             <!-- Major -->
                             <div class="col-md-4">
-                                <label for="major">Major</label>
+                                <label for="major_create_select">Major</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <select name="major" id="major" class="form-select ps-5" required>
-                                            <option value="">Select Major</option>
-                                            <option value="Web Programming">Web Programming</option>
-                                            <option value="Multimedia">Multimedia</option>
-                                            <option value="Teknik Jaringan">Teknik Jaringan</option>
+                                        <input type="hidden" name="major" id="major_create_hidden" value="">
+                                        <select name="major_select" id="major_create_select" class="form-select ps-5" required @if(old('student_id')) disabled @endif style="background-color: #f2f7ff; cursor: default;">
+                                            <option value="">Select Student to detect Major</option>
+                                            @foreach($majors as $majorItem)
+                                                <option value="{{ $majorItem->name }}">{{ $majorItem->name }}</option>
+                                            @endforeach
                                         </select>
                                         <div class="form-control-icon">
                                             <i class="bi bi-bookmark"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Key -->
+                            <div class="col-md-4">
+                                <label for="key_id">Key</label>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group has-icon-left">
+                                    <div class="position-relative">
+                                        <select name="key_id" id="key_id" class="form-select ps-5" required>
+                                            <option value="">Select Key</option>
+                                            @foreach($keys as $keyItem)
+                                                <option value="{{ $keyItem->id }}" data-name="{{ $keyItem->name }}">{{ $keyItem->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="form-control-icon">
+                                            <i class="bi bi-key"></i>
                                         </div>
                                     </div>
                                 </div>

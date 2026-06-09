@@ -19,7 +19,7 @@
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="text" id="locker_code{{ $locker->id }}" name="locker_code" class="form-control locker-code-input" placeholder="Locker Code" required value="{{ old('locker_code', $locker->locker_code) }}" data-original-code="{{ $locker->locker_code }}" data-locker-id="{{ $locker->id }}">
+                                        <input type="text" id="locker_code{{ $locker->id }}" name="locker_code" class="form-control locker-code-input" placeholder="Select a key to generate code" readonly required value="{{ old('locker_code', $locker->locker_code) }}" data-original-code="{{ $locker->locker_code }}" data-locker-id="{{ $locker->id }}">
                                         <div class="form-control-icon">
                                             <i class="bi bi-box"></i>
                                         </div>
@@ -28,17 +28,21 @@
                                 </div>
                             </div>
 
-                            <!-- Locker Name -->
+                            <!-- Owner / Student -->
                             <div class="col-md-4">
-                                <label for="locker_name{{ $locker->id }}">Owner Name</label>
+                                <label for="student_name_display_edit{{ $locker->id }}">Owner (Student)</label>
                             </div>
                             <div class="col-md-8">
-                                <div class="form-group has-icon-left">
-                                    <div class="position-relative">
-                                        <input type="text" id="locker_name{{ $locker->id }}" name="locker_name" class="form-control" placeholder="Locker Name" required value="{{ old('locker_name', $locker->locker_name) }}">
-                                        <div class="form-control-icon">
-                                            <i class="bi bi-box"></i>
-                                        </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="hidden" name="student_id" id="student_id_edit{{ $locker->id }}" value="{{ $locker->student_id }}">
+                                        <input type="text" id="student_name_display_edit{{ $locker->id }}" class="form-control" placeholder="Click choose to select student" readonly style="background-color: #f2f7ff; cursor: default;" value="{{ $locker->student->student_name ?? '' }}">
+                                        <button class="btn btn-primary" type="button" onclick="openChooseStudentModal('#student_id_edit{{ $locker->id }}', '#student_name_display_edit{{ $locker->id }}')">
+                                            <i class="bi bi-search"></i> Choose
+                                        </button>
+                                        <button class="btn btn-outline-danger" type="button" onclick="clearStudentSelection('#student_id_edit{{ $locker->id }}', '#student_name_display_edit{{ $locker->id }}')">
+                                            <i class="bi bi-x"></i> Clear
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -58,25 +62,46 @@
                                 </div>
                             </div>
 
-                            <!-- Major -->
-                            <div class="col-md-4">
-                                <label for="major{{ $locker->id }}">Major</label>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group has-icon-left">
-                                    <div class="position-relative">
-                                        <select name="major" id="major{{ $locker->id }}" class="form-select ps-5" required>
-                                            <option value="">Select Major</option>
-                                            <option value="Web Programming" @if(old('major', $locker->major) == 'Web Programming') selected @endif>Web Programming</option>
-                                            <option value="Multimedia" @if(old('major', $locker->major) == 'Multimedia') selected @endif>Multimedia</option>
-                                            <option value="Teknik Jaringan" @if(old('major', $locker->major) == 'Teknik Jaringan') selected @endif>Teknik Jaringan</option>
-                                        </select>
-                                        <div class="form-control-icon">
-                                            <i class="bi bi-bookmark"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                             <!-- Major -->
+                             <div class="col-md-4">
+                                 <label for="major_select{{ $locker->id }}">Major</label>
+                             </div>
+                             <div class="col-md-8">
+                                 <div class="form-group has-icon-left">
+                                     <div class="position-relative">
+                                         <input type="hidden" name="major" id="major_edit_hidden{{ $locker->id }}" value="{{ old('major', $locker->major) }}">
+                                         <select name="major_select" id="major_select{{ $locker->id }}" class="form-select ps-5" required @if($locker->student_id) disabled @endif style="background-color: #f2f7ff; cursor: default;">
+                                             <option value="">Select Student to detect Major</option>
+                                             @foreach($majors as $majorItem)
+                                                 <option value="{{ $majorItem->name }}" @if(old('major', $locker->major) == $majorItem->name) selected @endif>{{ $majorItem->name }}</option>
+                                             @endforeach
+                                         </select>
+                                         <div class="form-control-icon">
+                                             <i class="bi bi-bookmark"></i>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             <!-- Key -->
+                             <div class="col-md-4">
+                                 <label for="key_id{{ $locker->id }}">Key</label>
+                             </div>
+                             <div class="col-md-8">
+                                 <div class="form-group has-icon-left">
+                                     <div class="position-relative">
+                                         <select name="key_id" id="key_id{{ $locker->id }}" class="form-select ps-5" required>
+                                             <option value="">Select Key</option>
+                                             @foreach($keys as $keyItem)
+                                                 <option value="{{ $keyItem->id }}" data-name="{{ $keyItem->name }}" @if(old('key_id', $locker->key_id) == $keyItem->id) selected @endif>{{ $keyItem->name }}</option>
+                                             @endforeach
+                                         </select>
+                                         <div class="form-control-icon">
+                                             <i class="bi bi-key"></i>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
 
                             <!-- Locker Status -->
                             <div class="col-md-4">

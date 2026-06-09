@@ -5,7 +5,10 @@ use App\Http\Controllers\Admin\Sign\SignupController;
 use App\Http\Controllers\Admin\Sign\ForgotController;
 use App\Http\Controllers\Master\User\UserController;
 use App\Http\Controllers\Master\Role\RoleController;
+use App\Http\Controllers\Master\Major\MajorController;
+use App\Http\Controllers\Master\Key\KeyController;
 use App\Http\Controllers\Master\Utils\LockerController;
+use App\Http\Controllers\Master\Student\StudentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,5 +47,9 @@ Route::post('logout', [SigninController::class, 'logout'])->name('logout');
 // Resource
 Route::resource('user', UserController::class);
 Route::resource('role', RoleController::class);
+Route::resource('major', MajorController::class);
+Route::get('key/check-name', [KeyController::class, 'checkName'])->name('key.check-name');
+Route::resource('key', KeyController::class);
 Route::get('locker/check-code', [LockerController::class, 'checkCode'])->name('locker.check-code');
 Route::resource('locker', LockerController::class);
+Route::resource('student', StudentController::class);

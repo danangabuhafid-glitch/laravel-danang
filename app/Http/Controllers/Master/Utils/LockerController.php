@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Master\Utils;
 
 use App\Http\Controllers\Controller;
 use App\Models\Locker;
+use App\Models\Majors;
+use App\Models\Keys;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,8 +19,11 @@ class LockerController extends Controller
     public function index()
     {
         $title = 'Locker Management';
-        $lockers = DB::table('lockers')->get();
-        return view('admin.locker.index', compact('lockers', 'title'));
+        $lockers = Locker::with(['key', 'student'])->get();
+        $majors = Majors::where('is_active', 1)->get();
+        $keys = Keys::where('is_active', 1)->get();
+        $students = Student::where('is_active', 1)->get();
+        return view('admin.locker.index', compact('lockers', 'title', 'majors', 'keys', 'students'));
     }
 
     /**
@@ -25,7 +31,7 @@ class LockerController extends Controller
      */
     public function create(Request $request)
     {
-     return redirect()->route('locker.index');
+      return redirect()->route('locker.index');
     }
 
     /**
@@ -36,19 +42,31 @@ class LockerController extends Controller
         $request->validate([
             'locker_code' => 'required|string|max:5|unique:lockers,locker_code',
             'locker_name' => 'nullable|string|max:60',
+            'student_id' => 'nullable|exists:students,id',
             'locker_description' => 'nullable|string|max:255',
-            'major' => 'required|in:Web Programming,Multimedia,Teknik Jaringan',
+            'major' => 'required|string|max:255',
             'locker_status' => 'required|in:Available,Unavailable,Damaged,Missing',
             'batch' => 'required|in:1,2,3',
+            'key_id' => 'nullable|exists:keys,id',
         ]);
+
+        $lockerName = $request->locker_name;
+        if ($request->student_id) {
+            $student = Student::find($request->student_id);
+            if ($student) {
+                $lockerName = $student->student_name;
+            }
+        }
 
         Locker::create([
             'locker_code' => $request->locker_code,
-            'locker_name' => $request->locker_name,
+            'locker_name' => $lockerName,
+            'student_id' => $request->student_id,
             'locker_description' => $request->locker_description,
             'major' => $request->major,
             'locker_status' => $request->locker_status,
             'batch' => $request->batch,
+            'key_id' => $request->key_id,
         ]);
 
         return redirect()->route('locker.index')->with('success', 'Locker created successfully!');
@@ -78,19 +96,31 @@ class LockerController extends Controller
         $request->validate([
             'locker_code' => 'required|string|max:5|unique:lockers,locker_code,' . $id,
             'locker_name' => 'nullable|string|max:60',
+            'student_id' => 'nullable|exists:students,id',
             'locker_description' => 'nullable|string|max:255',
-            'major' => 'required|in:Web Programming,Multimedia,Teknik Jaringan',
+            'major' => 'required|string|max:255',
             'locker_status' => 'required|in:Available,Unavailable,Damaged,Missing',
             'batch' => 'required|in:1,2,3',
+            'key_id' => 'nullable|exists:keys,id',
         ]);
+
+        $lockerName = $request->locker_name;
+        if ($request->student_id) {
+            $student = Student::find($request->student_id);
+            if ($student) {
+                $lockerName = $student->student_name;
+            }
+        }
 
         Locker::where('id', $id)->update([
             'locker_code' => $request->locker_code,
-            'locker_name' => $request->locker_name,
+            'locker_name' => $lockerName,
+            'student_id' => $request->student_id,
             'locker_description' => $request->locker_description,
             'major' => $request->major,
             'locker_status' => $request->locker_status,
             'batch' => $request->batch,
+            'key_id' => $request->key_id,
         ]);
 
         return redirect()->route('locker.index')->with('success', 'Locker updated successfully!');

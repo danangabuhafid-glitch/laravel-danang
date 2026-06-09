@@ -21,22 +21,31 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item has-sub {{ request()->routeIs('user.*') || request()->routeIs('role.*') ? 'active' : '' }}">
+                        <li class="sidebar-item has-sub {{ request()->routeIs('user.*') || request()->routeIs('role.*') || request()->routeIs('major.*') || request()->routeIs('key.*') || request()->routeIs('student.*') ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Data Master</span>
                             </a>
-                            <ul class="submenu {{ request()->routeIs('user.*') || request()->routeIs('role.*') ? 'active' : '' }}">
+                            <ul class="submenu {{ request()->routeIs('user.*') || request()->routeIs('role.*') || request()->routeIs('major.*') || request()->routeIs('key.*') || request()->routeIs('student.*') ? 'active' : '' }}">
                                 <li class="submenu-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                                     <a href="{{route('user.index')}}">User</a>
                                 </li>
                                 <li class="submenu-item {{ request()->routeIs('role.*') ? 'active' : '' }}">
                                     <a href="{{route('role.index')}}">Role</a>
                                 </li>
+                                <li class="submenu-item {{ request()->routeIs('major.*') ? 'active' : '' }}">
+                                    <a href="{{route('major.index')}}">Major</a>
+                                </li>
+                                <li class="submenu-item {{ request()->routeIs('key.*') ? 'active' : '' }}">
+                                    <a href="{{route('key.index')}}">Key</a>
+                                </li>
+                                <li class="submenu-item {{ request()->routeIs('student.*') ? 'active' : '' }}">
+                                    <a href="{{route('student.index')}}">Student</a>
+                                </li>
                             </ul>
                         </li>
 
-                        <li class="sidebar-title">Forms &amp; Tables</li>
+                        <li class="sidebar-title">Management</li>
 
                         <li class="sidebar-item has-sub {{ request()->routeIs('locker.*') ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
@@ -50,7 +59,7 @@
                             </ul>
                         </li>
 
-                        <li class="sidebar-item  ">
+                        <!-- <li class="sidebar-item  ">
                             <a href="form-layout.html" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Form Layout</span>
@@ -254,7 +263,7 @@
                                 <i class="bi bi-cash"></i>
                                 <span>Donate</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="sidebar-item">
                             <a href="#" class='sidebar-link text-danger' onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

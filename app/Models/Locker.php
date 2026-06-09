@@ -12,6 +12,18 @@ class Locker extends Model
         'locker_description',
         'major',
         'locker_status',
-        'batch'
+        'batch',
+        'key_id',
+        'student_id'
     ];
+
+    public function key()
+    {
+        return $this->belongsTo(Keys::class, 'key_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
 }
