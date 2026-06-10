@@ -9,6 +9,7 @@ use App\Http\Controllers\Master\Major\MajorController;
 use App\Http\Controllers\Master\Key\KeyController;
 use App\Http\Controllers\Master\Utils\LockerController;
 use App\Http\Controllers\Master\Student\StudentController;
+use App\Http\Controllers\Master\Instructor\InstructorController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -53,3 +54,4 @@ Route::resource('key', KeyController::class);
 Route::get('locker/check-code', [LockerController::class, 'checkCode'])->name('locker.check-code');
 Route::resource('locker', LockerController::class);
 Route::resource('student', StudentController::class);
+Route::resource('instructor', InstructorController::class);

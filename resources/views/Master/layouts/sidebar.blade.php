@@ -21,12 +21,12 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item has-sub {{ request()->routeIs('user.*') || request()->routeIs('role.*') || request()->routeIs('major.*') || request()->routeIs('key.*') || request()->routeIs('student.*') ? 'active' : '' }}">
+                        <li class="sidebar-item has-sub {{ request()->routeIs('user.*') || request()->routeIs('role.*') || request()->routeIs('major.*') || request()->routeIs('key.*') || request()->routeIs('student.*') || request()->routeIs('instructor.*') ? 'active' : '' }}">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-person-badge-fill"></i>
                                 <span>Data Master</span>
                             </a>
-                            <ul class="submenu {{ request()->routeIs('user.*') || request()->routeIs('role.*') || request()->routeIs('major.*') || request()->routeIs('key.*') || request()->routeIs('student.*') ? 'active' : '' }}">
+                            <ul class="submenu {{ request()->routeIs('user.*') || request()->routeIs('role.*') || request()->routeIs('major.*') || request()->routeIs('key.*') || request()->routeIs('student.*') || request()->routeIs('instructor.*') ? 'active' : '' }}">
                                 <li class="submenu-item {{ request()->routeIs('user.*') ? 'active' : '' }}">
                                     <a href="{{route('user.index')}}">User</a>
                                 </li>
@@ -41,6 +41,9 @@
                                 </li>
                                 <li class="submenu-item {{ request()->routeIs('student.*') ? 'active' : '' }}">
                                     <a href="{{route('student.index')}}">Student</a>
+                                </li>
+                                <li class="submenu-item {{ request()->routeIs('instructor.*') ? 'active' : '' }}">
+                                    <a href="{{route('instructor.index')}}">Instructor</a>
                                 </li>
                             </ul>
                         </li>

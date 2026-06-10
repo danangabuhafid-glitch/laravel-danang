@@ -1,24 +1,24 @@
-<!-- Create Student Modal -->
-<div class="modal fade text-left" id="createStudentModal" tabindex="-1" role="dialog" aria-labelledby="createStudentModalLabel" aria-hidden="true">
+<!-- Create Instructor Modal -->
+<div class="modal fade text-left" id="createInstructorModal" tabindex="-1" role="dialog" aria-labelledby="createInstructorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createStudentModalLabel">Create Student</h5>
+                <h5 class="modal-title" id="createInstructorModalLabel">Create Instructor</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('student.store') }}" method="POST" class="form form-horizontal">
+            <form action="{{ route('instructor.store') }}" method="POST" class="form form-horizontal">
                 @csrf
                 <div class="modal-body">
                     <div class="form-body">
                         <div class="row">
-                            <!-- Student Name -->
+                            <!-- Instructor Name -->
                             <div class="col-md-4">
-                                <label for="student_name">Student Name</label>
+                                <label for="instructor_name">Instructor Name</label>
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group has-icon-left">
                                     <div class="position-relative">
-                                        <input type="text" id="student_name" name="student_name" class="form-control" placeholder="Student Name" required value="{{ old('student_name') }}">
+                                        <input type="text" id="instructor_name" name="instructor_name" class="form-control" placeholder="Instructor Name" required value="{{ old('instructor_name') }}">
                                         <div class="form-control-icon">
                                             <i class="bi bi-person"></i>
                                         </div>
@@ -70,8 +70,8 @@
                                     <div class="position-relative">
                                         <select name="is_active" id="is_active" class="form-select ps-5" required>
                                             <option value="">Select Status</option>
-                                            <option value="1" @if(old('is_active') === '1') selected @endif>Siswa</option>
-                                            <option value="0" @if(old('is_active') === '0') selected @endif>Alumni</option>
+                                            <option value="1" @if(old('is_active') === '1') selected @endif>Active</option>
+                                            <option value="0" @if(old('is_active') === '0') selected @endif>Inactive</option>
                                         </select>
                                         <div class="form-control-icon">
                                             <i class="bi bi-toggle-on"></i>
@@ -144,7 +144,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Student</button>
+                    <button type="submit" class="btn btn-primary">Save Instructor</button>
                 </div>
             </form>
         </div>

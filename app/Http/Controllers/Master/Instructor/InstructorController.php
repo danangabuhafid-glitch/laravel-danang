@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Master\Student;
+namespace App\Http\Controllers\Master\Instructor;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Student;
-use App\Models\Majors;
+
+use App\Models\Instructor;
 use App\Models\User;
+use App\Models\role;
 use Illuminate\Support\Facades\DB;
 
-class StudentController extends Controller
+class InstructorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $students = Student::with('major')->get();
+        $instructors = Instructor::with('major')->get();
         $majors = \App\Models\Majors::where('is_active', 1)->get();
-        $title = 'Student Management';
-        return view('Master.Student.index', compact('students', 'majors', 'title'));
+        $title = 'Instructor Management';
+        return view('Master.Instructor.index', compact('instructors', 'majors', 'title'));
     }
 
     /**
@@ -27,8 +28,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return redirect()->route('student.index');
-
+        return redirect()->route('instructor.index');
     }
 
     /**
@@ -38,7 +38,7 @@ class StudentController extends Controller
     {
         $request->validate([
             'major_id' => 'required|exists:majors,id',
-            'student_name' => 'required|string|max:255',
+            'instructor_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
             'is_active' => 'required|in:1,0',
             'username' => 'required|string|max:255|unique:users,username',
@@ -48,29 +48,29 @@ class StudentController extends Controller
 
         DB::beginTransaction();
         try {
-            $studentRole = \App\Models\role::firstOrCreate(
-                ['role_name' => 'Student'],
+            $instructorRole = \App\Models\role::firstOrCreate(
+                ['role_name' => 'Instructor'],
                 ['is_active' => 'active']
             );
 
             $user = User::create([
-                'name' => $request->student_name,
+                'name' => $request->instructor_name,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'role_id' => $studentRole->id,
+                'role_id' => $instructorRole->id,
             ]);
 
-            Student::create([
+            Instructor::create([
                 'user_id' => $user->id,
                 'major_id' => $request->major_id,
-                'student_name' => $request->student_name,
+                'instructor_name' => $request->instructor_name,
                 'phone' => $request->phone,
                 'is_active' => $request->is_active,
             ]);
 
             DB::commit();
-            return redirect()->route('student.index')->with('success', 'Student created successfully!');
+            return redirect()->route('instructor.index')->with('success', 'Instructor created successfully!');
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->withInput()->withErrors(['error' => $th->getMessage()]);
@@ -82,7 +82,7 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-       
+        
     }
 
     /**
@@ -90,8 +90,7 @@ class StudentController extends Controller
      */
     public function edit(string $id)
     {
-        return redirect()->route('student.index');
-
+        return redirect()->route('instructor.index');
     }
 
     /**
@@ -99,36 +98,23 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $student = Student::findOrFail($id);
+        $instructor = Instructor::findOrFail($id);
 
         $request->validate([
             'major_id' => 'required|exists:majors,id',
-            'student_name' => 'required|string|max:255',
+            'instructor_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:255',
             'is_active' => 'required|in:1,0',
         ]);
 
-        $student->major_id = $request->major_id;
-        $student->student_name = $request->student_name;
-        $student->phone = $request->phone;
-        $student->is_active = $request->is_active;
+        $instructor->major_id = $request->major_id;
+        $instructor->instructor_name = $request->instructor_name;
+        $instructor->phone = $request->phone;
+        $instructor->is_active = $request->is_active;
 
-        $student->save();
+        $instructor->save();
 
-        if ($student->is_active == 0) {
-            // Release assigned locker and set status to Available
-            \App\Models\Locker::where('student_id', $student->id)->update([
-                'student_id' => null,
-                'locker_status' => 'Available'
-            ]);
-        } else {
-            // Keep owner name synchronized
-            \App\Models\Locker::where('student_id', $student->id)->update([
-                'locker_name' => $student->student_name
-            ]);
-        }
-
-        return redirect()->route('student.index')->with('success', 'Student updated successfully!');
+        return redirect()->route('instructor.index')->with('success', 'Instructor updated successfully!');
     }
 
     /**
@@ -136,9 +122,9 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        $student = Student::findOrFail($id);
-        $student->delete();
+        $instructor = Instructor::findOrFail($id);
+        $instructor->delete();
 
-        return redirect()->route('student.index')->with('success', 'Student deleted successfully!');
+        return redirect()->route('instructor.index')->with('success', 'Instructor deleted successfully!');
     }
 }

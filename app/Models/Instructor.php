@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Student extends Model
+class Instructor extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'major_id',
-        'student_name',
+        'instructor_name',
         'phone',
         'is_active',
         'user_id',
@@ -19,10 +20,5 @@ class Student extends Model
     public function major()
     {
         return $this->belongsTo(Majors::class, 'major_id');
-    }
-
-    public function locker()
-    {
-        return $this->hasOne(Locker::class, 'student_id');
     }
 }
