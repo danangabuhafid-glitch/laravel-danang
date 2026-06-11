@@ -19,6 +19,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('Master.layouts.sidebar', function ($view) {
+            $sidebarMenus = \App\Models\Menu::with('submenus')
+                ->whereNull('parent_id')
+                ->where('is_active', 1)
+                ->orderBy('order')
+                ->get();
+            $view->with('sidebarMenus', $sidebarMenus);
+        });
     }
 }
