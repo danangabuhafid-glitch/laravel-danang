@@ -11,6 +11,7 @@ use App\Http\Controllers\Master\Utils\LockerController;
 use App\Http\Controllers\Master\Student\StudentController;
 use App\Http\Controllers\Master\Instructor\InstructorController;
 use App\Http\Controllers\Master\Menu\MenuController;
+use App\Http\Controllers\Master\Role\RolePermissionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,23 +38,26 @@ Route::get('forgot', [ForgotController::class, 'showForgotForm'])->name('forgot'
 Route::post('forgot', [ForgotController::class, 'handleForgot'])->name('forgot.submit');
 Route::post('forgot/reset', [ForgotController::class, 'resetForgot'])->name('forgot.reset');
 
-// Dashboard
-Route::get('dashboard', function () {
-    return view('admin.dashboard.index');
-})->middleware(['auth', 'prevent-back-history'])->name('dashboard');
+Route::middleware(['auth', 'prevent-back-history', 'check-permission'])->group(function () {
+    // Dashboard
+    Route::get('dashboard', function () {
+        return view('admin.dashboard.index');
+    })->name('dashboard');
 
+    // Resource
+    Route::resource('user', UserController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('major', MajorController::class);
+    Route::get('key/check-name', [KeyController::class, 'checkName'])->name('key.check-name');
+    Route::resource('key', KeyController::class);
+    Route::get('locker/check-code', [LockerController::class, 'checkCode'])->name('locker.check-code');
+    Route::resource('locker', LockerController::class);
+    Route::resource('student', StudentController::class);
+    Route::resource('instructor', InstructorController::class);
+    Route::resource('menu', MenuController::class);
+    Route::get('role-permission', [RolePermissionController::class, 'index'])->name('role-permission.index');
+    Route::post('role-permission', [RolePermissionController::class, 'store'])->name('role-permission.store');
+});
 
 // Logout
-Route::post('logout', [SigninController::class, 'logout'])->name('logout');
-
-// Resource
-Route::resource('user', UserController::class);
-Route::resource('role', RoleController::class);
-Route::resource('major', MajorController::class);
-Route::get('key/check-name', [KeyController::class, 'checkName'])->name('key.check-name');
-Route::resource('key', KeyController::class);
-Route::get('locker/check-code', [LockerController::class, 'checkCode'])->name('locker.check-code');
-Route::resource('locker', LockerController::class);
-Route::resource('student', StudentController::class);
-Route::resource('instructor', InstructorController::class);
-Route::resource('menu', MenuController::class);
+Route::post('logout', [SigninController::class, 'logout'])->name('logout')->middleware('auth');

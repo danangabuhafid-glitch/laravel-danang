@@ -59,4 +59,9 @@ class Menu extends Model
 
         return false;
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(role::class, 'role_menu', 'menu_id', 'role_id');
+    }
 }
